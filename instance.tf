@@ -1,10 +1,10 @@
 provider "aws" {
-  region = "us-east-1"
+  region = "${var.region}"
 }
 
 resource "aws_instance" "vault_server" {
   ami                         = "${data.aws_ami.centos.id}"
-  instance_type               = "t2.micro"
+  instance_type               = "${var.instance_type}"
   associate_public_ip_address = "true"
   key_name                    = "${aws_key_pair.vault.key_name}"
   vpc_security_group_ids      = ["${aws_security_group.vault-sec-group.id}"]
@@ -29,15 +29,15 @@ data "aws_ami" "centos" {
   }
 }
 
+resource "aws_key_pair" "vault" {
+  key_name   = "vault-key"
+  public_key = "${file("~/.ssh/id_rsa.pub")}"
+}
+
 output "CENTOS_AMI" {
   value = "${data.aws_ami.centos.id}"
 }
 
 output "Public_ip" {
   value = "${aws_instance.vault_server.public_ip}"
-}
-
-resource "aws_key_pair" "vault" {
-  key_name   = "vault-key"
-  public_key = "${file("~/.ssh/id_rsa.pub")}"
 }
