@@ -25,8 +25,6 @@ resource "null_resource" "vault" {
       "mkdir -p vault/volumes/{config,file,logs}",
       "sudo usermod -aG docker $(whoami)",
     ]
-
-    #     "cd vault",
   }
 
   provisioner "file" {
