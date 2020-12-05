@@ -1,19 +1,23 @@
-resource "null_resource" "remote" {
-   triggers = {
-    always_run = "${timestamp()}"
-    }   
+resource "null_resource" "vault" {
+    triggers = {
+       always_run = "${timestamp()}"
+    }
+  
+  depends_on = ["aws_instance.vault_server"]
+
+       
   provisioner "remote-exec" {
     connection {
-    type     = "ssh"
-    user     = "ubuntu"
-    private_key = "${file("~/.ssh/id_rsa")}"
-    host     = "${aws_instance.provisioner.public_ip}"
-  }
+      type        = "ssh"
+      user        = "centos"
+      private_key = "${file("~/.ssh/id_rsa")}"
+      host        = "${aws_instance.vault_server.public_ip}"
+    }
+
     inline = [
-      "sudo apt-get install apache2 -y",
-      "sudo systemctl start apache2",
-      "sudo apt-get install telnet -y",
-      "sudo apt-get remove wget -y"
+      "sudo yum install httpd -y",
+      "sudo systemctl start httpd",
+      "sudo yum install httpd -y"
     ]
   }
 }

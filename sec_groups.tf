@@ -9,6 +9,7 @@ resource "aws_security_group" "vault-sec-group" {
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
+
   ingress {
     description = "TLS from VPC"
     from_port   = 8200
