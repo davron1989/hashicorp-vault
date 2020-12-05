@@ -33,6 +33,10 @@ output "CENTOS_AMI" {
   value = "${data.aws_ami.centos.id}"
 }
 
+output "Public_ip" {
+  value = "${aws_instance.vault_server.public_ip}"
+}
+
 resource "aws_key_pair" "vault" {
   key_name   = "vault-key"
   public_key = "${file("~/.ssh/id_rsa.pub")}"

@@ -14,16 +14,19 @@ resource "null_resource" "vault" {
     }
 
     inline = [
-#      "sudo su root",
+      #      "sudo su root",
       "sudo yum install wget -y",
+
       "sudo wget -qO- https://get.docker.com/  | sh",
       "sudo systemctl start docker",
       "sudo systemctl enable docker",
       "sudo yum install python3 python3-pip -y",
       "sudo pip3 install docker-compose",
-      "mkdir -p vault/{config,file,logs}",
-      "cd vault",
+      "mkdir -p vault/volumes/{config,file,logs}",
+      "sudo usermod -aG docker $(whoami)",
     ]
+
+    #     "cd vault",
   }
 
   provisioner "file" {
@@ -35,7 +38,17 @@ resource "null_resource" "vault" {
     }
 
     source      = "./vault/volumes/config/vault.json"
-    destination = "~/vault/config/vault.json"
+    destination = "~/vault/volumes/config/vault.json"
+  }
+
+  provisioner "file" {
+    connection {
+      type        = "ssh"
+      user        = "centos"
+      private_key = "${file("~/.ssh/id_rsa")}"
+      host        = "${aws_instance.vault_server.public_ip}"
+    }
+
     source      = "./vault/docker-compose.yml"
     destination = "~/vault/docker-compose.yml"
   }
