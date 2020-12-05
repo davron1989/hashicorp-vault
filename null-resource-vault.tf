@@ -32,12 +32,13 @@ resource "null_resource" "vault" {
       private_key = "${file("~/.ssh/id_rsa")}"
       host        = "${aws_instance.vault_server.public_ip}"
     }
-    source = /vault/config/vault.json
-    destination = ./vault/config/vault.json
-    source = ./docker-compose.yml
-    destination =/~
+    source = /vault/volumes/config/vault.json
+    destination = ./vault/volumes/config/vault.json
+    source = ./vault/docker-compose.yml
+    destination =/vault
 
     inline = [
+        "cd /vault",
         "docker-compose up -d"
     ]
   }
