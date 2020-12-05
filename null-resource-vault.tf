@@ -14,9 +14,7 @@ resource "null_resource" "vault" {
     }
 
     inline = [
-      #      "sudo su root",
       "sudo yum install wget -y",
-
       "sudo wget -qO- https://get.docker.com/  | sh",
       "sudo systemctl start docker",
       "sudo systemctl enable docker",
