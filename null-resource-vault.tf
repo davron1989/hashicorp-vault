@@ -33,7 +33,7 @@ resource "null_resource" "vault" {
       host        = "${aws_instance.vault_server.public_ip}"
     }
 
-    source      = "./vault/volumes/config/vault.json"
+    source      = "/home/centos/hashicorp-vault/vault/vault.json"
     destination = "~/vault/volumes/config/vault.json"
   }
 
@@ -45,7 +45,7 @@ resource "null_resource" "vault" {
       host        = "${aws_instance.vault_server.public_ip}"
     }
 
-    source      = "./vault/docker-compose.yml"
+    source      = "/home/centos/hashicorp-vault/vault/docker-compose.yml"
     destination = "~/vault/docker-compose.yml"
   }
 
