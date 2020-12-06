@@ -3,6 +3,7 @@ provider "aws" {
 }
 
 resource "aws_instance" "vault_server" {
+#  count = 3
   ami                         = "${data.aws_ami.centos.id}"
   instance_type               = "${var.instance_type}"
   associate_public_ip_address = "true"

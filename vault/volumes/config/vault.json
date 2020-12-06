@@ -1,7 +1,11 @@
 {
   "backend": {
-    "file": {
-      "path": "/vault/file"
+    "s3": {
+      "region" : "us-east-1",
+      "access_key": "AWS ACCESS KEY",
+      "secret_key": "AWS SECRET KEY",
+      "bucket": "davron-test",
+      "key"   : "path/to/my/key-vault"
     }
   },
   "listener": {
