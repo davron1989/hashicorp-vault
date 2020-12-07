@@ -9,11 +9,27 @@ resource "aws_instance" "vault_server" {
   associate_public_ip_address = "true"
   key_name                    = "${aws_key_pair.vault.key_name}"
   vpc_security_group_ids      = ["${aws_security_group.vault-sec-group.id}"]
+#  subnet_id = "${element(var.subnets, count.index )}"
 
   tags = {
-    Name = "vault_server"
+    Name = "vault-server-${count.index + 1}"
   }
 }
+
+# attaches ebs to the instances
+// resource "aws_ebs_volume" "vault-ebs" {
+//   count = 2
+//   availability_zone = "${data.aws_availability_zones.available.names[count.index]}"
+//   size = 1
+//   type = "gp2"
+// }
+
+// resource "aws_volume_attachment" "my-vol-attach" {
+//   count = 2
+//   device_name = "/dev/xvdh"
+//   instance_id = "${aws_instance.vault_server.*.id[count.index]}"
+//   volume_id = "${aws_ebs_volume.vault-ebs.*.id[count.index]}"
+// }
 
 data "aws_ami" "centos" {
   most_recent = true

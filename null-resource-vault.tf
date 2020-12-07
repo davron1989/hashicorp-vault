@@ -1,6 +1,6 @@
 resource "null_resource" "vault" {
   triggers = {
-    always_run = "${timestamp()}"
+    always_run = "${timestamp()}"    # ??????? why after this quote mark code colar changed.
   }
 
   depends_on = ["aws_instance.vault_server"]
@@ -10,7 +10,7 @@ resource "null_resource" "vault" {
       type        = "ssh"
       user        = "centos"
       private_key = "${file("~/.ssh/id_rsa")}"
-      host        = "${aws_instance.vault_server.public_ip}"
+      host        = "${aws_instance.vault_server.public_ip}"   # ???????? how to spcify each vms ip address here when created multiple VM with count
     }
 
     source      = "/home/centos/hashicorp-vault/vault"            # needs full path for vault directory form cloned repo
@@ -35,7 +35,7 @@ resource "null_resource" "vault" {
       "sudo pip3 install docker-compose",
       "sudo usermod -aG docker $(whoami)",
       "mv /tmp/vault  ~/",
-      "chmod +x vault",
+      "sudo chmod +x vault",
       "cd vault",
       "docker-compose up -d"
     ]
